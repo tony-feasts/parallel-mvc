@@ -25,7 +25,7 @@ source-repository head
 library
   exposed-modules:
       GraphGenerator
-      Lib
+      MVCSeq
   other-modules:
       Paths_parallel_mvc
   autogen-modules:

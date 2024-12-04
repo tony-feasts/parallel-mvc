@@ -32,8 +32,8 @@ generateGraph n m = do
 -- | Write a graph to a file
 -- m lines are the edges "u v"
 -- Document FilePath, WriteMode, withFile, hPutStrLn
-writeGraph :: Int -> Int -> V.IOVector (Int, Int) -> FilePath -> IO ()
-writeGraph n m edges path = do
+writeGraph :: Int -> V.IOVector (Int, Int) -> FilePath -> IO ()
+writeGraph m edges path = do
     withFile path WriteMode $ \handle -> do
         forM_ [0..m-1] $ \idx -> do
             (node, neighbor) <- V.read edges idx

@@ -10,6 +10,7 @@ import Data.STRef -- document STRef
 import Control.Monad.ST -- document ST
 import qualified Data.Vector as V
 import Data.Char (digitToInt)
+import MVCSeq (solve)
 
 -- | Parse edge file and construct adjacency list and edge set
 buildGraph :: Int -> B.ByteString -> (V.Vector [Int], S.Set (Int, Int))
@@ -43,18 +44,13 @@ main = do
     case args of
         [nStr, mStr] -> do
             case (readMaybe nStr :: Maybe Int, readMaybe mStr :: Maybe Int) of
-                (Just n, Just _m) -> do -- document _m
+                (Just n, Just m) -> do -- document _m
                     let path = "data/v" ++ nStr ++ "e" ++ mStr ++ ".txt"
                     file <- B.readFile path
-                    let (adjList, edgeSet) = buildGraph n file
-                    
-                    -- Print adjacency list
-                    putStrLn "Adjacency List:"
-                    V.imapM_ (\i neighbors -> putStrLn $ show i ++ ": " ++ show neighbors) adjList
+                    let (adjList, _edgeSet) = buildGraph n file
 
-                    -- Print edge set
-                    putStrLn "\nEdge Set:"
-                    print edgeSet
+                    print $ solve n m adjList
+                    
 
                 _ -> die "n and m must be integers"
 

@@ -22,7 +22,7 @@ main = do
                     
                     edges <- generateGraph n m
                     let path = "data/v" ++ nStr ++ "e" ++ mStr ++ ".txt"
-                    writeGraph n m edges path
+                    writeGraph m edges path
                     putStrLn $ "Graph saved to: " ++ path
 
                 _ -> die "n and m must be integers"
