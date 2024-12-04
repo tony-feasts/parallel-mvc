@@ -35,6 +35,8 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , containers
     , random
     , vector
   default-language: Haskell2010
@@ -50,6 +52,26 @@ executable graph-generator
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , containers
+    , parallel-mvc
+    , random
+    , vector
+  default-language: Haskell2010
+
+executable mvc
+  main-is: mvc/Main.hs
+  other-modules:
+      Paths_parallel_mvc
+  autogen-modules:
+      Paths_parallel_mvc
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , bytestring
+    , containers
     , parallel-mvc
     , random
     , vector
@@ -67,6 +89,8 @@ test-suite parallel-mvc-test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , containers
     , parallel-mvc
     , random
     , vector

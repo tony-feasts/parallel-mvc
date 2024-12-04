@@ -30,12 +30,11 @@ generateGraph n m = do
     return edges
 
 -- | Write a graph to a file
--- First line is "n m", next m lines are the edges "u v"
+-- m lines are the edges "u v"
 -- Document FilePath, WriteMode, withFile, hPutStrLn
 writeGraph :: Int -> Int -> V.IOVector (Int, Int) -> FilePath -> IO ()
 writeGraph n m edges path = do
     withFile path WriteMode $ \handle -> do
-        hPutStrLn handle $ show n ++ " " ++ show m
         forM_ [0..m-1] $ \idx -> do
             (node, neighbor) <- V.read edges idx
             hPutStrLn handle $ show node ++ " " ++ show neighbor

@@ -2,7 +2,7 @@ module Main (main) where
 
 import GraphGenerator (writeGraph, generateGraph)
 import System.Environment (getArgs, getProgName)
-import Text.Read (readMaybe)
+import Text.Read (readMaybe) -- document
 import System.Exit (die)
 import Control.Monad (when)
 
@@ -21,7 +21,7 @@ main = do
                         die "m must be between 1 and n(n - 1)/2"
                     
                     edges <- generateGraph n m
-                    let path = "data/v" ++ show n ++ "e" ++ show m ++ ".txt"
+                    let path = "data/v" ++ nStr ++ "e" ++ mStr ++ ".txt"
                     writeGraph n m edges path
                     putStrLn $ "Graph saved to: " ++ path
 
