@@ -1,3 +1,5 @@
+-- stack exec mvc -- 10 20 3
+
 module Main (main) where
 
 import System.Environment (getArgs, getProgName)
@@ -10,7 +12,8 @@ import Data.STRef -- document STRef
 import Control.Monad.ST -- document ST
 import qualified Data.Vector as V
 import Data.Char (digitToInt)
-import MVCSeq (solve)
+import qualified MVCSeq as MVCS
+import qualified MVCPar as MVCP
 
 -- | Parse edge file and construct adjacency list and edge set
 buildGraph :: Int -> B.ByteString -> (V.Vector [Int], S.Set (Int, Int))
@@ -42,18 +45,21 @@ main :: IO ()
 main = do
     args <- getArgs
     case args of
-        [nStr, mStr] -> do
-            case (readMaybe nStr :: Maybe Int, readMaybe mStr :: Maybe Int) of
-                (Just n, Just m) -> do -- document _m
+        [nStr, mStr, cStr] -> do
+            case (readMaybe nStr :: Maybe Int, readMaybe mStr :: Maybe Int,
+                  readMaybe cStr :: Maybe Int) of
+                (Just n, Just m, Just c) -> do -- document _m
                     let path = "data/v" ++ nStr ++ "e" ++ mStr ++ ".txt"
                     file <- B.readFile path
                     let (adjList, _edgeSet) = buildGraph n file
 
-                    print $ solve n m adjList
+                    --print $ MVCS.solve n m adjList
+                    print $ MVCP.solve n m c adjList
+
                     
 
                 _ -> die "n and m must be integers"
 
         _ -> do
             pn <- getProgName
-            die $ "Usage: " ++ pn ++ " <n> <m>"
+            die $ "Usage: " ++ pn ++ " <n> <m> <c>"

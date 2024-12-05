@@ -17,6 +17,7 @@ dependencies:
   - random
   - bytestring
   - containers
+  - monad-par
 
 ghc-options:
   - -Wall
@@ -41,6 +42,10 @@ executables:
     main: mvc/Main.hs
     source-dirs: app
     dependencies: [parallel-mvc]
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
 
 tests:
   parallel-mvc-test:
