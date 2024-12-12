@@ -60,29 +60,36 @@ main :: IO ()
 main = do
     args <- getArgs
     case args of
-        [nStr, mStr, cStr] -> do
-            case (readMaybe nStr :: Maybe Int, readMaybe mStr :: Maybe Int,
-                  readMaybe cStr :: Maybe Int) of
+        (mode:nStr:mStr:cStr:[]) -> do
+            case (readMaybe nStr :: Maybe Int, readMaybe mStr :: Maybe Int, readMaybe cStr :: Maybe Int) of
                 (Just n, Just m, Just c) -> do
                     let path = "data/v" ++ nStr ++ "e" ++ mStr ++ ".txt"
                     file <- B.readFile path
                     let adjList = buildGraph n file
                     print $ MVCP.solve n m c adjList
 
+                    case mode of
+                        "MVCS" -> print $ IS.toList (MVCS.solve n m adjList)
+                        "MVCP" -> print $ IS.toList (MVCP.solve n m c adjList)
+                        _        -> die "Mode must be 'MVCS', 'MVCP', or other available approaches"
+
                 _ -> die "n, m & c must be integers"
-        
-        [nStr, mStr] -> do
+
+        (mode:nStr:mStr:[]) -> do
             case (readMaybe nStr :: Maybe Int, readMaybe mStr :: Maybe Int) of
                 (Just n, Just m) -> do
                     let path = "data/v" ++ nStr ++ "e" ++ mStr ++ ".txt"
                     file <- B.readFile path
                     let adjList = buildGraph n file
 
-                    print $ IS.toList (MVCS.solve n m adjList)
-                
+                    case mode of
+                        "MVCS" -> print $ IS.toList (MVCS.solve n m adjList)
+                        _        -> die "Mode must be 'MVCS' for this input format"
+
                 _ -> die "n and m must be integers"
 
         _ -> do
             pn <- getProgName
             die $ "Usage: " ++ pn ++ " <n> <m> <c>"
 
+            die $ "Usage: " ++ pn ++ " <mode> <n> <m> [<c>]"
