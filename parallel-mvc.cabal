@@ -24,6 +24,7 @@ library
       GraphGenerator
       MVCPar
       MVCSeq
+      SubsetTools
   other-modules:
       Paths_parallel_mvc
   hs-source-dirs:
