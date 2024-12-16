@@ -16,6 +16,8 @@ import qualified MVCPar as MVCP
 import SubsetTools (choose, nthSubsetIO, next)
 import qualified Data.Vector.Unboxed.Mutable as VUM
 import Data.IORef (IORef, newIORef, readIORef)
+import qualified IncrementalParallel as MVIP
+import qualified SequentialBruteForce as MVCSBF
 
 -- | Parse edge file and construct adjacency list and edge set
 buildGraph :: Int -> B.ByteString -> V.Vector IS.IntSet
@@ -71,7 +73,9 @@ main = do
                     case mode of
                         "MVCS" -> print $ IS.toList (MVCS.solve n m adjList)
                         "MVCP" -> print $ IS.toList (MVCP.solve n m c adjList)
-                        _        -> die "Mode must be 'MVCS', 'MVCP', or other available approaches"
+                        "MVIP" -> print $ MVIP.solve adjList c
+                        "MVCSBF" -> print $ MVCSBF.solve adjList
+                        _        -> die "Mode must be 'MVCS', 'MVCP', 'MVIP', or 'MVCSBF'"
 
                 _ -> die "n, m & c must be integers"
 
@@ -84,7 +88,8 @@ main = do
 
                     case mode of
                         "MVCS" -> print $ IS.toList (MVCS.solve n m adjList)
-                        _        -> die "Mode must be 'MVCS' for this input format"
+                        "MVCSBF" -> print $ MVCSBF.solve adjList
+                        _        -> die "Mode must be 'MVCS', 'MVCSBF' for this input format"
 
                 _ -> die "n and m must be integers"
 
