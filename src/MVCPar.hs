@@ -68,6 +68,7 @@ processRange n m k adjList (start, end) =
       return vs
 
 -- | BFS over k using parMapM
+-- A dare I say optimal way to solve MVC in parallel using BFS
 solve :: Int -> Int -> Int -> V.Vector IS.IntSet -> [Int]
 solve n m chunkSize adjList = runPar (bfs 0)
   where

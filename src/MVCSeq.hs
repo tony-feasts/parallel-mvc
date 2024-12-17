@@ -29,7 +29,6 @@ solve n m adjList = bfs (Seq.singleton (IS.empty, IS.empty, 1))
                 newCover = IS.foldl' (\acc u -> IS.insert (encodeEdge v u) acc) 
                      cover (adjList V.! v)
 
-
             in if IS.size newCover == m
                then ((Seq.singleton (newSubset, newCover, v + 1)), n + 1)
                else ((subsets Seq.|> (newSubset, newCover, v + 1)), v + 1)

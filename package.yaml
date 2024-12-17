@@ -45,12 +45,12 @@ executables:
       - -O2
 
 tests:
-  parallel-mvc-test:
-    main: Spec.hs
+  pv1:
+    main: pv1.hs
     source-dirs: test
     ghc-options:
       - -threaded
       - -rtsopts
       - -with-rtsopts=-N
-    dependencies:
-      - parallel-mvc
+      - -O2
+    dependencies: [parallel-mvc]
