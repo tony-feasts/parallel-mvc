@@ -1,3 +1,7 @@
+{- First stab at a parallel mvc solver generates a whole level of subsets in
+    parallel. After a level of subsets is generated in parallel it is checked
+    in parallel. -}
+
 module ParallelV1 (solve) where
 
 import qualified Data.Vector as V
@@ -27,6 +31,7 @@ genSubsetsParallel depth xs k
             (x:xs') ->
                 let withX = map (x:) (genSubsetsParallel (depth-1) xs' (k-1))
                     withoutX = genSubsetsParallel (depth-1) xs' k
+                -- ++ is strict in the first argument, so we have both children
                 in withX `par` (withoutX `pseq` (withX ++ withoutX))
             [] -> [] -- Surpress warning
 
@@ -46,18 +51,18 @@ solve adj =
         depth = 3 -- Control parallel recursion depth
         chunkSize = 1000 -- Chunks of subsets to verify in parallel
     in search 1 vertices depth chunkSize
-  where
-    search size vs depth chunkSize =
-        let subsets = genSubsetsParallel depth vs size
-            results = map checkChunk (chunk chunkSize subsets)
-                        `using` parList rdeepseq
-        in case concat results of
-            []      -> search (size+1) vs depth chunkSize
-            (sol:_) -> sol
+    where
+        search size vs depth chunkSize =
+            let subsets = genSubsetsParallel depth vs size
+                results = map checkChunk (chunk chunkSize subsets)
+                            `using` parList rdeepseq
+            in case concat results of
+                []      -> search (size+1) vs depth chunkSize
+                (sol:_) -> sol
 
-    -- Check all subsets in a chunk
-    checkChunk subsets =
-        [ s | s <- subsets, verifyVertexCover s adj ]
+        -- Check all subsets in a chunk
+        checkChunk subsets =
+            [ s | s <- subsets, verifyVertexCover s adj ]
 
 -- Helper: Chunk a list into fixed-size pieces
 chunk :: Int -> [a] -> [[a]]

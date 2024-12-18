@@ -5,21 +5,21 @@ import Control.Monad (forM_)
 import System.Random (randomRIO)
 import System.IO (withFile, IOMode(WriteMode), hPutStrLn)
 import qualified Data.ByteString as B
-import qualified Data.Vector.Mutable as V -- document IOVector
-import Control.Monad.ST (runST) -- document ST
-import qualified Data.Vector.Mutable as MV -- document Mutable Vector
-import qualified Data.IntSet as IS -- document IntSet
-import Data.Char (digitToInt, chr) -- document digitToInt, chr
+import qualified Data.Vector.Mutable as V
+import Control.Monad.ST (runST)
+import qualified Data.Vector.Mutable as MV
+import qualified Data.IntSet as IS
+import Data.Char (digitToInt, chr)
 import qualified Data.Vector as V
 
--- | Generate a random graph with n nodes and m edges
+-- Generate a random graph with n nodes and m edges
 -- Returns a vector with first m elements being the edges
 generateGraph :: Int -> Int -> IO (V.IOVector (Int, Int))
 generateGraph n m = do
     let maxEdges = n * (n - 1) `div` 2
     edges <- V.new maxEdges
 
-    edgeIdx <- newIORef 0 -- document newIORef
+    edgeIdx <- newIORef 0
 
     -- Generate all possible edges
     forM_ [1..n] $ \node -> do
@@ -30,14 +30,13 @@ generateGraph n m = do
     
     -- Randomly remove edges until we have m edges
     forM_ [1..(maxEdges - m)] $ \delim -> do
-        idx <- randomRIO (0, maxEdges - delim) -- document randomRIO
+        idx <- randomRIO (0, maxEdges - delim)
         V.swap edges idx (maxEdges - delim)
     
     return edges
 
--- | Write a graph to a file
+-- Write a graph to a file
 -- m lines are the edges "u v"
--- Document FilePath, WriteMode, withFile, hPutStrLn
 writeGraph :: Int -> V.IOVector (Int, Int) -> FilePath -> IO ()
 writeGraph m edges path = do
     withFile path WriteMode $ \handle -> do
@@ -45,7 +44,7 @@ writeGraph m edges path = do
             (node, neighbor) <- V.read edges idx
             hPutStrLn handle $ show node ++ " " ++ show neighbor
 
--- | Parse edge file and construct adjacency list and edge set
+-- Parse edge file and construct adjacency list and edge set
 fileToAdjList :: Int -> B.ByteString -> V.Vector IS.IntSet
 fileToAdjList n file = runST $ do
     adjList <- MV.replicate (n + 1) IS.empty

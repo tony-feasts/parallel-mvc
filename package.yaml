@@ -61,8 +61,31 @@ tests:
       - -rtsopts
       - -O2
     dependencies: [parallel-mvc]
+  pv3:
+    main: pv3.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -O2
+    dependencies: [parallel-mvc]
+  pv4:
+    main: pv4.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -O2
+    dependencies: [parallel-mvc]
   sv1:
     main: sv1.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -O2
+  sv2:
+    main: sv2.hs
     source-dirs: test
     ghc-options:
       - -threaded

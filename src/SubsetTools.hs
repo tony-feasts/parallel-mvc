@@ -1,6 +1,8 @@
+-- Subset tools to help us with stateless combinatorial MVC solver
+
 module SubsetTools (choose, nthSubsetIO, next) where
 
-import qualified Data.Vector.Unboxed.Mutable as VUM -- document IOVector
+import qualified Data.Vector.Unboxed.Mutable as VUM
 
 factorial :: Int -> Integer
 factorial n = product [1 .. fromIntegral n]

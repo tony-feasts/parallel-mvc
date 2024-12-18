@@ -1,3 +1,7 @@
+{- Canonical mvc solver generates all subsets of a certain size and checks
+   them. Move on to larger size if no solutions found. Subsets are generated
+   in standard dfs manner. -}
+
 module SequentialV1 (solve) where
 
 import qualified Data.Vector as V

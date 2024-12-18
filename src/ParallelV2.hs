@@ -1,3 +1,5 @@
+{- We attempt to lower memory usage from repeated subset generation with a
+   cache and sequential dfs subset generation. We fail miserably. -}
 module ParallelV2 (solve) where
 
 import qualified Data.Vector as V
@@ -57,6 +59,7 @@ genSubsetsCache list n cache
   | otherwise =
       let (x:xs) = list
           -- Generate subsets with and without x
+
           -- subsets including x
           (withX, cache1) = genSubsetsCache xs (n - 1) cache
           -- subsets excluding x
