@@ -1,7 +1,7 @@
--- stack test :pv1 --ta "+RTS -l -N8 -A128M -RTS"
+-- stack test :sv1 --ta "+RTS -l -RTS"
 import qualified Data.ByteString.Char8 as B
 import GraphGenerator (fileToAdjList)
-import ParallelV1 (solve)
+import SequentialV1 (solve)
 
 main :: IO ()
 main = do

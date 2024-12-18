@@ -53,8 +53,16 @@ tests:
       - -rtsopts
       - -O2
     dependencies: [parallel-mvc]
-  ps1:
-    main: ps1.hs
+  pv2:
+    main: pv2.hs
+    source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -O2
+    dependencies: [parallel-mvc]
+  sv1:
+    main: sv1.hs
     source-dirs: test
     ghc-options:
       - -threaded
