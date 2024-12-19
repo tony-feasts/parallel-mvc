@@ -29,14 +29,13 @@ genAndCheckSeq adj k xs chosen
         else IS.empty
     | null xs = IS.empty
     | otherwise =
-        let (x:xs') = xs
-            -- Try including x
-            chosenWith = genAndCheckSeq adj (k-1) xs' (IS.insert x chosen)
-        in if not (IS.null chosenWith)
-           then chosenWith
-           else
-               -- If including x failed, try excluding x
-               genAndCheckSeq adj k xs' chosen
+        case xs of
+            (x:xs') ->
+                let withX = genAndCheckSeq adj (k-1) xs' (IS.insert x chosen)
+                in if not (IS.null withX)
+                   then withX
+                   else genAndCheckSeq adj k xs' chosen
+            [] -> IS.empty -- Surpress warning
 
 -- Parallel search with depth control and verification at base case
 genAndCheckPar :: Int -> V.Vector IS.IntSet -> Int -> [Int] ->
@@ -52,31 +51,33 @@ genAndCheckPar depth adj k xs chosen
         -- Fallback to sequential if no more parallel depth allowed
         genAndCheckSeq adj k xs chosen
     | otherwise =
-        let (x:xs') = xs
-            -- Try including x
-            chosenWith = genAndCheckPar (depth - 1) adj (k-1) xs'
-                (IS.insert x chosen)
-            -- Try excluding x
-            chosenWithout = genAndCheckPar (depth - 1) adj k xs' chosen
-        in
-            -- Evaluate chosenWith in parallel, then force chosenWithout
-            -- Force evaluation of chosenWith with null check
-            -- We only want one solution, we discard chosenWithout if
-            -- chosenWith not null
-            chosenWith `par` (chosenWithout `pseq`
-                (if not (IS.null chosenWith)
-                 then chosenWith
-                 else chosenWithout))
+        case xs of
+            (x:xs') ->
+                let -- Try including x
+                    chosenWith = genAndCheckPar (depth - 1) adj (k-1) xs'
+                        (IS.insert x chosen)
+                    -- Try excluding x
+                    chosenWithout = genAndCheckPar (depth - 1) adj k xs' chosen
+                in
+                    -- Evaluate chosenWith in parallel, then force without
+                    -- Force evaluation of chosenWith with null check
+                    -- We only want one solution, we discard chosenWithout if
+                    -- chosenWith not null
+                    chosenWith `par` (chosenWithout `pseq`
+                        (if not (IS.null chosenWith)
+                        then chosenWith
+                        else chosenWithout))
+            [] -> IS.empty -- Surpress warning
 
 -- Find a minimal vertex cover using parallelized subset generation & checking
 solve :: V.Vector IS.IntSet -> Int -> [Int]
-solve adj depth = solve' adj depth 1 nodes
+solve adj depth = solve' 1
     where
         n = V.length adj - 1
         nodes = [1..n]
-        solve' adj depth size nodes =
+        solve' size =
             let sol = genAndCheckPar depth adj size nodes IS.empty
             in if IS.null sol
-               then solve' adj depth (size + 1) nodes
+               then solve' (size + 1)
                else IS.toList sol
             

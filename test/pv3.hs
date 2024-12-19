@@ -5,6 +5,6 @@ import ParallelV3 (solve)
 
 main :: IO ()
 main = do
-    file <- B.readFile "data/v24e276.txt"
+    file <- B.readFile "data/v26e38.txt"
     let adjList = fileToAdjList 26 file
-    print $ solve adjList 10
+    print $ solve adjList 100

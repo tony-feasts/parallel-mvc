@@ -1,5 +1,5 @@
 -- | Ultra-fast combinatorial MVC solver with memory efficient
--- subset level processing.
+-- subset level processing
 -- No regeneration of subsets
 
 module ParallelV4 (solve) where
