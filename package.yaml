@@ -84,6 +84,7 @@ tests:
       - -threaded
       - -rtsopts
       - -O2
+    dependencies: [parallel-mvc]
   sv2:
     main: sv2.hs
     source-dirs: test

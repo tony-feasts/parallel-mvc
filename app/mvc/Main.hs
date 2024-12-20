@@ -1,4 +1,4 @@
--- stack exec mvc -- +RTS -l -N -A128M -RTS 20 190 50
+-- stack exec mvc -- +RTS -l -N -A128M -RTS 20 190 10000
 
 module Main (main) where
 

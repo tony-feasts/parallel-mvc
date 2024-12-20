@@ -7,4 +7,4 @@ main :: IO ()
 main = do
     file <- B.readFile "data/v26e38.txt"
     let adjList = fileToAdjList 26 file
-    print $ solve adjList
+    print $ solve 26 38 adjList
