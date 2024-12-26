@@ -22,7 +22,7 @@ A brute-force approach to solving the **Minimum Vertex Cover (MVC)** problem in 
 
 ## Overview
 
-**Minimum Vertex Cover** is an NP-complete problem: given a graph \( G = (V, E) \), find the smallest subset of vertices \( V' \subseteq V \) such that every edge in \( E \) is incident to at least one vertex in \( V' \). This repository provides:
+**Minimum Vertex Cover** is an NP-complete problem: given a graph \( G = (V, E) \), find the smallest subset of vertices V' such that every edge in \( E \) is incident to at least one vertex in \( V' \). This repository provides:
 
 - **Multiple brute-force MVC solvers** in Haskell
 - **Parallel** and **sequential** variations
